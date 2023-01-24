@@ -33,8 +33,9 @@ cp replace_code/deepspeed.py path_to/python3.7/dist-packages/transformers/deepsp
 - tape_proteins
 - scikit-multilearn
 - PyYAML
+- PyTorch Geometric
 
-Pytorch-Geometric is required for the PPI (protein-protein interaction) task. Detailed environment configurations for the PPI task can be found in [GNN-PPI](https://github.com/lvguofeng/GNN_PPI).
+Note PyTorch Geometric is required for the PPI (protein-protein interaction) task. Check your PyTorch and cuda versions, and follow the [installation instructions](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html) to install correctly.
 
 Since the `tape_proteins` library only implemented the `P@L` metric for the contact prediction task, we add the `P@L/5` and `P@L/2` metrics by running the following script:
 ```shell
@@ -46,7 +47,7 @@ cp replace_code/tape/modeling_utils.py pathto/python3.7/dist-packages/tape/model
 For pre-training data preparation, please refer to [here](./ProteinKG25.md).
 
 The data for [TAPE](https://github.com/songlab-cal/tape) tasks and the PPI task can be downloaded from [here](https://drive.google.com/file/d/1snEAixeRokQW0wrJxLWtNA7m8VrzXN5A/view?usp=sharing).
-The data for the [PROBE](https://github.com/kansil/PROBE) task can be acquired via [link](https://drive.google.com/file/d/1Sy0ldh_0fhAPatffTYJ7CENp3pbZHfyu/view?usp=sharing).
+The data for the [PROBE](https://github.com/kansil/PROBE) tasks can be acquired via [link](https://drive.google.com/file/d/1Sy0ldh_0fhAPatffTYJ7CENp3pbZHfyu/view?usp=sharing).
 
 ----
 ## Models Preparation
@@ -70,10 +71,15 @@ In this part, we fine-tune the [pre-trained model](https://drive.google.com/file
 ❗NOTE: You will need to change some paths for downstream data and extracted embeddings (PPI and PROBE tasks) before running the code.
 
 ### TAPE Tasks
-Secondary structure prediction, contact prediction, remote homology detection, stability prediction, and Fluorescence are tasks from [TAPE](https://github.com/songlab-cal/tape).
+Secondary structure prediction, contact prediction, remote homology detection, stability prediction, and fluorescence prediction are tasks from [TAPE](https://github.com/songlab-cal/tape).
 
-Similar to [OntoProtein](https://github.com/zjunlp/OntoProtein), for these tasks, we provide scripts for fine-tuning under `script/` (❗Preferred). You can also use the running codes in `run_downstream.py` , and write your shell files according to your need:
-- `run_downstream.py`: support `{ss3, ss8, contact, remote_homology, fluorescence}` tasks;
+Similar to [OntoProtein](https://github.com/zjunlp/OntoProtein), for these tasks, we provide scripts for fine-tuning under `script/` (❗Preferred). For example, you can fine-tune KeAP for contact prediction by running the following script:
+```shell
+sh ./script/run_contact.sh
+```
+
+You can also use the running codes in `run_downstream.py` to write shell files with custom configurations.
+- `run_downstream.py`: support `{ss3, ss8, contact, remote_homology, fluorescence, stability}` tasks;
 - `run_stability.py`: support `stability` task;
 
 An example of fine-tuning KeAP for contact prediction (`script/run_contact.sh`) is as follows:
@@ -98,11 +104,11 @@ bash run_main.sh \
 
 Arguments for the training and evalution script are as follows,
 
-- `--task_name`: Specify which task to evaluate on, and now the script supports `{ss3, ss8, contact, remote_homology, fluorescence, stability}` tasks;
-- `--model`: The name or path of a protein pre-trained checkpoint.
-- `--output_file`: The path of the fine-tuned checkpoint saved.
-- `--do_train`: Specify if you want to finetune the pretrained model on downstream tasks.
-- `--epoch`: Epochs for training model.
+- `--task_name`: Specify downstream task. The script supports `{ss3, ss8, contact, remote_homology, fluorescence, stability}` tasks;
+- `--model`: The name or path of a pre-trained protein language model checkpoint.
+- `--output_file`: The path to save fine-tuned checkpoint and logs.
+- `--do_train`: Specify if you want to fine-tune the pretrained model on downstream tasks. Set this to `False` if you want to evaluate a fine-tuned checkpoint.
+- `--epoch`: Number of epochs for training.
 - `--optimizer`: The optimizer to use, e.g., `AdamW`.
 - `--per_device_batch_size`: Batch size per GPU.
 - `--gradient_accumulation_steps`: The number of gradient accumulation steps.
@@ -110,7 +116,8 @@ Arguments for the training and evalution script are as follows,
 - `--eval_batchsize`: Evaluation batch size.
 - `--warmup_ratio`: Ratio of total training steps used for a linear warmup from 0 to `learning_rate`.
 - `--learning_rate`: Learning rate for fine-tuning
-- `--frozen_bert`: Specify if you want to froze the encoder in the pretrained model.
+- `--seed`: Set seed for reproducibility
+- `--frozen_bert`: Specify if you want to freeze the encoder in the pretrained model.
 
 More detailed parameters can be found in `run_main.sh`.
 
@@ -120,8 +127,9 @@ More detailed parameters can be found in `run_main.sh`.
 Semantic similarity inference and binding affinity estimation are tasks from [PROBE](https://github.com/kansil/PROBE). The code for PROBE can be found in `src/benchmark/PROBE`.
 
 To validate KeAP on these two tasks, you need to:
-- First extract embeddings using pre-trained KeAP by running `src/benchmark/PROBE/extract_embeddings.py`. 
-- Then, change paths listed in `src/benchmark/PROBE/bin/probe_config.yaml` accordingly. 
+- Configure paths in `src/benchmark/PROBE/extract_embeddings.py` to your pre-trained model and PROBE data accordingly.
+- Extract embeddings using pre-trained KeAP by running `src/benchmark/PROBE/extract_embeddings.py`. 
+- Change paths listed in `src/benchmark/PROBE/bin/probe_config.yaml` accordingly. 
 - Finally, run `src/benchmark/PROBE/bin/PROBE.py`. 
 
 Detailed instructions and explanations of outputs can be found in [PROBE](https://github.com/kansil/PROBE).
@@ -130,5 +138,7 @@ Detailed instructions and explanations of outputs can be found in [PROBE](https:
 The code for PPI can be found in `src/benchmark/GNN_PPI`, which was modified based on [GNN-PPI](https://github.com/lvguofeng/GNN_PPI).
 
 To validate KeAP for PPI prediction:
-- First extract embeddings using pre-trained KeAP by running `src/benchmark/GNN_PPI/extract_protein_embeddings.py`.
+- Configure paths in `src/benchmark/GNN_PPI/extract_protein_embeddings.py` to your pre-trained model and PPI data accordingly.
+- Extract embeddings using pre-trained KeAP by running `src/benchmark/GNN_PPI/extract_protein_embeddings.py`.
+- Change paths listed in `src/benchmark/GNN_PPI/run.py` accordingly. 
 - Run `src/benchmark/GNN_PPI/run.py`.
