@@ -1,30 +1,34 @@
-# KeAP
+# Knowledge-exploited Auto-encoder for Proteins (KeAP)
 
-This repository contains an official implementation of the ICLR2023 paper "[Protein Representation Learning via Knowledge Enhanced Primary Structure Reasoning](https://openreview.net/forum?id=VbCMhg7MRmj)". KeAP effectively encodes knowledge into protein language models by learning to exploit Gene Ontology knowledge graphs for protein primary structure reasoning.
+This repository contains an official implementation of our ICLR 2023 paper [Protein Representation Learning via Knowledge Enhanced Primary Structure Reasoning](https://openreview.net/forum?id=VbCMhg7MRmj). KeAP effectively encodes knowledge into protein language models by learning to exploit Gene Ontology knowledge graphs for protein primary structure reasoning. Some code was borrowed from [OntoProtein](https://github.com/zjunlp/OntoProtein).
 
-## links
+## Overview
 
-* [Requirements](#requirements)
-  * [Environment for pre-training](#environment-for-pre-training)
-  * [Environment for protein-related tasks](#environment-for-protein-related-tasks)
-* [Data preparation](#data-preparation)
-  * [Pre-training data](#pre-training-data)
-  * [Downstream task data](#downstream-task-data)
-* [Pre-training](#protein-pre-training-model)
-* [Downstream tasks](#downsteam-tasks)
-  * [TAPE tasks](#tape-tasks)
-  * [PROBE tasks](#PROBE-tasks)
-  * [PPI task](#PPI-tasks)
+- [Knowledge-exploited Auto-encoder for Proteins (KeAP)](#knowledge-exploited-auto-encoder-for-proteins-keap)
+  - [Overview](#overview)
+  - [Environment Configuration](#environment-configuration)
+    - [Requirements for pre-training](#requirements-for-pre-training)
+    - [Environment for protein-related tasks](#environment-for-protein-related-tasks)
+  - [Data preparation](#data-preparation)
+    - [Pre-training data](#pre-training-data)
+    - [Downstream task data](#downstream-task-data)
+  - [Pre-training](#pre-training)
+  - [Downstream tasks](#downstream-tasks)
+    - [TAPE tasks](#tape-tasks)
+    - [PROBE tasks](#probe-tasks)
+    - [PPI task](#ppi-task)
 
-## Requirements
-<span id="requirements"></span>
-To run our code, please install dependency packages for related steps.
-
-### Environment for pre-training
+## Environment Configuration
+<span id="config"></span>
+### Requirements for pre-training
 <span id="environment-for-pre-training"></span>
-python3.7 / pytorch 1.9 / transformer 4.5.1+ / deepspeed 0.6.5/ lmdb / 
+> python 3.7
+> pytorch 1.9
+> transformer 4.5.1+
+> deepspeed 0.6.5
+> lmdb
 
-Following [OntoProtein](https://github.com/zjunlp/OntoProtein), we also make small changes to the `deepspeed.py` file under transformers library (❗required for pretraining).
+Following [OntoProtein](https://github.com/zjunlp/OntoProtein), we also make small changes to the `deepspeed.py` file under transformers library (❗required for pre-training).
 The changes can be applied by running:
 ```shell
 cp replace_code/deepspeed.py usr/local/lib/python3.7/dist-packages/transformers/deepspeed.py
