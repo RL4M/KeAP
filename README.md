@@ -2,12 +2,12 @@
 
 This repository contains an official implementation of KeAP, presented by our ICLR'23 paper titled [Protein Representation Learning via Knowledge Enhanced Primary Structure Reasoning](https://openreview.net/forum?id=VbCMhg7MRmj). KeAP effectively encodes knowledge into protein language models by learning to exploit Gene Ontology knowledge graphs for protein primary structure reasoning. Some code was borrowed from [OntoProtein](https://github.com/zjunlp/OntoProtein).
 
+----
 ## ProteinKG25 Configuration
 [ProteinKG25]((https://zjunlp.github.io/project/ProteinKG25/)) is a large-scale knowledge graph dataset with aligned descriptions and protein sequences respectively to GO terms and protein entities. This dataset is necessary for performing pre-training. You can follow the [instruction](./ProteinKG25.md) to configure ProteinKG25.
 
-- python 3.7
-  
-### Requirements for pre-training
+----  
+## Environments for Pre-training
 - python 3.7
 - pytorch 1.9
 - transformer 4.5.1+
@@ -17,38 +17,49 @@ This repository contains an official implementation of KeAP, presented by our IC
 Following [OntoProtein](https://github.com/zjunlp/OntoProtein), we also make small changes to the `deepspeed.py` file under transformers library (❗required for pre-training).
 The changes can be applied by running:
 ```shell
-cp replace_code/deepspeed.py usr/local/lib/python3.7/dist-packages/transformers/deepspeed.py
+cp replace_code/deepspeed.py path_to/python3.7/dist-packages/transformers/deepspeed.py
 ```
 
-### Environment for protein-related tasks
-<span id="environment-for-protein-related-tasks"></span>
-python3.7 / pytorch 1.9 / transformer 4.5.1+ / lmdb / tape_proteins / scikit-multilearn / PyYAML
+----
+## Environments for Downstream Tasks
+- python 3.7
+- pytorch 1.9
+- transformer 4.5.1+
+- lmdb
+- tape_proteins
+- scikit-multilearn
+- PyYAML
 
-Pytorch-Geometric is required for the PPI task. Detailed environment configurations for the PPI task can be found in [GNN-PPI](https://github.com/lvguofeng/GNN_PPI)
+Pytorch-Geometric is required for the PPI (protein-protein interaction) task. Detailed environment configurations for the PPI task can be found in [GNN-PPI](https://github.com/lvguofeng/GNN_PPI).
 
-Since the `tape_proteins` library only implemented the `P@L` metric for the contact prediction task, we add the `P@L/5` and `P@L/2` metrics by adding functions in the `models/modeling_utils.py` file in the `tape_proteins` library.
-The changes can be applied by running:
+Since the `tape_proteins` library only implemented the `P@L` metric for the contact prediction task, we add the `P@L/5` and `P@L/2` metrics by running the following script:
 ```shell
-cp replace_code/tape/modeling_utils.py /usr/local/lib/python3.7/dist-packages/tape/models/modeling_utils.py
+cp replace_code/tape/modeling_utils.py pathto/python3.7/dist-packages/tape/models/modeling_utils.py
 ```
 
-## Data preparation
-<span id="data-preparation"></span>
+----
+## Data Preparation
+For pre-training data preparation, please refer to [here](./ProteinKG25.md).
 
-### Downstream task data
-<span id="downstream-task-data"></span>
-The data for [TAPE](https://github.com/songlab-cal/tape) tasks and PPI task can be downloaded from [[link]](https://drive.google.com/file/d/1snEAixeRokQW0wrJxLWtNA7m8VrzXN5A/view?usp=sharing).
-The data for [PROBE](https://github.com/kansil/PROBE) tasks can be downloaded from [[link]](https://drive.google.com/file/d/1Sy0ldh_0fhAPatffTYJ7CENp3pbZHfyu/view?usp=sharing)
+The data for [TAPE](https://github.com/songlab-cal/tape) tasks and the PPI task can be downloaded from [here](https://drive.google.com/file/d/1snEAixeRokQW0wrJxLWtNA7m8VrzXN5A/view?usp=sharing).
+The data for the [PROBE](https://github.com/kansil/PROBE) task can be acquired via [link](https://drive.google.com/file/d/1Sy0ldh_0fhAPatffTYJ7CENp3pbZHfyu/view?usp=sharing).
 
-## Pre-training
-<span id="protein-pre-training-model"></span>
-You can pre-training your own KeAP using ProteinKG25. Before pretraining, you need to download two pretrained model: 
+----
+## Models Preparation
+After configuring ProteinKG25 following the [instruction](./ProteinKG25.md), you also need to download the following two pre-trained models: 
 - [ProtBERT](https://huggingface.co/Rostlab/prot_bert) for initializing the protein encoder. 
 - [PubMedBERT](https://huggingface.co/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext) for extracting text features in Gene Onotology Annotations. 
 
-The script to run pre-training can be found in `script/run_pretrain.sh` and the detailed arguments are all listed in `src/training_args.py`. You will need to change the paths in `script/run_pretrain.sh` (PRETRAIN_DATA_DIR, ENCODER_MODEL_PATH, TEXT_MODEL_PATH) before running the script.
+Then, configure paths in `script/run_pretrain.sh` (`PRETRAIN_DATA_DIR`, `ENCODER_MODEL_PATH`, `TEXT_MODEL_PATH`) accordingly.
 
-## Downstream tasks
+Run the following script for pre-training:
+```shell
+sh ./script/run_pretrain.sh
+```
+The detailed arguments are listed in `src/training_args.py`. 
+
+----
+## Downstream Tasks
 <span id="downsteam-tasks"></span>
 
 We release the checkpoint of KeAP. [Download model](https://drive.google.com/file/d/1CZFV8DA4l9F74ias1fR8mHdf1grrjsNq/view?usp=sharing) to run downstream tasks.

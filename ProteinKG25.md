@@ -15,7 +15,7 @@ elif line[:5] == "def: ":
 self.definition = ""
 ```
 
-## Data Preparation
+## Pre-training Data Preparation
 
 You can download [ProteinKG25](https://zjunlp.github.io/project/ProteinKG25/) from [Google Drive](https://drive.google.com/file/d/1iTC2-zbvYZCDhWM_wxRufCvV6vvPk8HR/view).
 
@@ -37,7 +37,7 @@ For generating your own pre-training data, you need to download the following ra
 - `uniprot_sprot.dat`: protein Swiss-Prot database. [[link]](https://www.uniprot.org/downloads)
 - `goa_uniprot_all.gpa`: Gene Annotation data. [[link]](https://ftp.ebi.ac.uk/pub/databases/GO/goa/old/UNIPROT/)
 
-After downloading these raw data and configuring associated paths in `gen_onto_protein_data.py`, you can execute the following script to generate pre-training data:
+After downloading these raw data and **configuring associated paths in `gen_onto_protein_data.py`**, you can execute the following script to generate pre-training data:
 
 ```bash
 python gen_onto_protein_data.py
