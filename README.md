@@ -2,6 +2,8 @@
 
 This repository contains an official implementation of KeAP, presented by our ICLR'23 paper titled [Protein Representation Learning via Knowledge Enhanced Primary Structure Reasoning](https://openreview.net/forum?id=VbCMhg7MRmj). KeAP effectively encodes knowledge into protein language models by learning to exploit Gene Ontology knowledge graphs for protein primary structure reasoning. Some code was borrowed from [OntoProtein](https://github.com/zjunlp/OntoProtein).
 
+❗NOTE: Please configure data, environments, and paths carefully.
+
 ----
 ## ProteinKG25 Configuration
 [ProteinKG25]((https://zjunlp.github.io/project/ProteinKG25/)) is a large-scale knowledge graph dataset with aligned descriptions and protein sequences respectively to GO terms and protein entities. This dataset is necessary for performing pre-training. You can follow the [instruction](./ProteinKG25.md) to configure ProteinKG25.
@@ -59,27 +61,23 @@ sh ./script/run_pretrain.sh
 The detailed arguments are listed in `src/training_args.py`. 
 
 ----
-## Downstream Tasks
-<span id="downsteam-tasks"></span>
+## Downstream Tasks (Fine-tuning)
 
-We release the checkpoint of KeAP. [Download model](https://drive.google.com/file/d/1CZFV8DA4l9F74ias1fR8mHdf1grrjsNq/view?usp=sharing) to run downstream tasks.
+In this paprt, we fine-tune the [pre-trained model](https://drive.google.com/file/d/1CZFV8DA4l9F74ias1fR8mHdf1grrjsNq/view?usp=sharing) (i.e., a checkpoint of KeAP) on various downstream tasks.
 
-❗NOTE: You will need to change some paths to the downstream data and extracted embeddings (PPI and PROBE tasks) before running the code.
+❗NOTE: You will need to change some paths for downstream data and extracted embeddings (PPI and PROBE tasks) before running the code.
 
 ### TAPE tasks
-<span id="tape-tasks"></span>
 Secondary structure prediction, contact prediction, remote homology detection, stability prediction, and Fluorescence are tasks from [TAPE](https://github.com/songlab-cal/tape).
 
-We provide scripts for these tasks in `script/`. You can also utilize the running codes `run_downstream.py` , and write your shell files according to your need:
-
+Similar to [OntoProtein](https://github.com/zjunlp/OntoProtein), for these tasks, we provide scripts for fine-tuning under `script/` (❗Preferred). You can also use the running codes in `run_downstream.py` , and write your shell files according to your need:
 - `run_downstream.py`: support `{ss3, ss8, contact, remote_homology, fluorescence}` tasks;
 - `run_stability.py`: support `stability` task;
-
 
 An example of fine-tuning KeAP for contact prediction (`script/run_contact.sh`) is as follows:
 
 ```shell
-bash sh run_main.sh \
+bash run_main.sh \
       --model output/pretrained/KeAP20/encoder \
       --output_file contact-KeAP20 \
       --task_name contact \
@@ -116,21 +114,19 @@ More detailed parameters can be found in `run_main.sh`.
 
 **Note: the best checkpoint is saved in** `OUTPUT_DIR/`.
 
-### PROBE tasks
-<span id="PROBE-tasks"></span>
-Semantic similarity inference and binding affinity estimation are tasks from [PROBE](https://github.com/kansil/PROBE). The codes for PROBE can be found in `src/benchmark/PROBE`.
+### PROBE Tasks
+Semantic similarity inference and binding affinity estimation are tasks from [PROBE](https://github.com/kansil/PROBE). The code for PROBE can be found in `src/benchmark/PROBE`.
 
-To test KeAP on these tasks:
-- First extract embeddings using pre-trained KeAP by running the `src/benchmark/PROBE/extract_embeddings.py` script. 
-- Then change the paths in `src/benchmark/PROBE/bin/probe_config.yaml` 
+To validate KeAP on these two tasks, you need to:
+- First extract embeddings using pre-trained KeAP by running `src/benchmark/PROBE/extract_embeddings.py`. 
+- Then, change paths listed in `src/benchmark/PROBE/bin/probe_config.yaml` accordingly. 
 - Finally, run `src/benchmark/PROBE/bin/PROBE.py`. 
 
 Detailed instructions and explanations of outputs can be found in [PROBE](https://github.com/kansil/PROBE).
 
-### PPI task
-<span id="PPI-tasks"></span>
-The code for the protein-protein interaction downstream task is from [GNN-PPI](https://github.com/lvguofeng/GNN_PPI). The codes for PPI can be found in `src/benchmark/GNN_PPI`.
+### PPI Task
+The code for PPI can be found in `src/benchmark/GNN_PPI`, which was modified based on [GNN-PPI](https://github.com/lvguofeng/GNN_PPI).
 
-To test KeAP for protein-protein interaction (PPI) prediction:
-- First extract embeddings using pre-trained KeAP by running the `src/benchmark/GNN_PPI/extract_protein_embeddings.py` script.
+To validate KeAP for PPI prediction:
+- First extract embeddings using pre-trained KeAP by running `src/benchmark/GNN_PPI/extract_protein_embeddings.py`.
 - Run `src/benchmark/GNN_PPI/run.py`.
