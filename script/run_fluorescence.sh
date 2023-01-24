@@ -1,0 +1,16 @@
+nohup sh run_main.sh \
+      --model output/models/KeAP20/encoder \
+      --output_file fluorescence-KeAP20 \
+      --task_name fluorescence \
+      --do_train True \
+      --epoch 15 \
+      --mean_output True \
+      --optimizer Adam \
+      --per_device_batch_size 4 \
+      --gradient_accumulation_steps 16 \
+      --eval_step 50 \
+      --eval_batchsize 32 \
+      --warmup_ratio 0.0 \
+      --learning_rate 1e-3 \
+      --seed 3 \
+      --frozen_bert True > output/fluorescence/KeAP20.out 2>&1

@@ -1,0 +1,16 @@
+nohup sh run_main.sh \
+      --model output/models/KeAP20/encoder \
+      --output_file remote_homology-KeAP20 \
+      --task_name remote_homology \
+      --do_train True \
+      --epoch 10 \
+      --mean_output True \
+      --optimizer AdamW \
+      --per_device_batch_size 2 \
+      --gradient_accumulation_steps 16 \
+      --eval_step 50 \
+      --eval_batchsize 8 \
+      --warmup_ratio 0.08 \
+      --learning_rate 4e-5 \
+      --seed 3 \
+      --frozen_bert False > output/remote_homology/KeAP20.out 2>&1
