@@ -73,7 +73,9 @@ In this part, we fine-tune the [pre-trained model](https://drive.google.com/file
 ### TAPE Tasks
 Secondary structure prediction, contact prediction, remote homology detection, stability prediction, and fluorescence prediction are tasks from [TAPE](https://github.com/songlab-cal/tape).
 
-Similar to [OntoProtein](https://github.com/zjunlp/OntoProtein), for these tasks, we provide scripts for fine-tuning under `script/` (❗Preferred). For example, you can fine-tune KeAP for contact prediction by running the following script:
+Similar to [OntoProtein](https://github.com/zjunlp/OntoProtein), for these tasks, we provide scripts for fine-tuning under `script/` (❗Preferred). You may need to modify the DATA_DIR and OUTPUT_DIR paths in `run_main.sh` before running the scripts.
+
+For example, you can fine-tune KeAP for contact prediction by running the following script:
 ```shell
 sh ./script/run_contact.sh
 ```
@@ -106,8 +108,8 @@ Arguments for the training and evalution script are as follows,
 
 - `--task_name`: Specify downstream task. The script supports `{ss3, ss8, contact, remote_homology, fluorescence, stability}` tasks;
 - `--model`: The name or path of a pre-trained protein language model checkpoint.
-- `--output_file`: The path to save fine-tuned checkpoint and logs.
-- `--do_train`: Specify if you want to fine-tune the pretrained model on downstream tasks. Set this to `False` if you want to evaluate a fine-tuned checkpoint.
+- `--output_file`: The path to save fine-tuned checkpoints and logs.
+- `--do_train`: Specify if you want to fine-tune the pretrained model on downstream tasks. Set this to `False` if you want to evaluate a fine-tuned checkpoint on the test set.
 - `--epoch`: Number of epochs for training.
 - `--optimizer`: The optimizer to use, e.g., `AdamW`.
 - `--per_device_batch_size`: Batch size per GPU.
@@ -119,9 +121,7 @@ Arguments for the training and evalution script are as follows,
 - `--seed`: Set seed for reproducibility
 - `--frozen_bert`: Specify if you want to freeze the encoder in the pretrained model.
 
-More detailed parameters can be found in `run_main.sh`.
-
-**Note: the best checkpoint is saved in** `OUTPUT_DIR/`.
+More detailed parameters can be found in `run_main.sh`. Note that the best checkpoint is saved in `OUTPUT_DIR/`.
 
 ### PROBE Tasks
 Semantic similarity inference and binding affinity estimation are tasks from [PROBE](https://github.com/kansil/PROBE). The code for PROBE can be found in `src/benchmark/PROBE`.
@@ -130,7 +130,7 @@ To validate KeAP on these two tasks, you need to:
 - Configure paths in `src/benchmark/PROBE/extract_embeddings.py` to your pre-trained model and PROBE data accordingly.
 - Extract embeddings using pre-trained KeAP by running `src/benchmark/PROBE/extract_embeddings.py`. 
 - Change paths listed in `src/benchmark/PROBE/bin/probe_config.yaml` accordingly. 
-- Finally, run `src/benchmark/PROBE/bin/PROBE.py`. 
+- Run `src/benchmark/PROBE/bin/PROBE.py`. 
 
 Detailed instructions and explanations of outputs can be found in [PROBE](https://github.com/kansil/PROBE).
 
