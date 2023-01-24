@@ -1,0 +1,15 @@
+nohup sh run_main.sh \
+      --model output/models/KeAP20/encoder \
+      --output_file ss8-KeAP20 \
+      --task_name ss8 \
+      --do_train True \
+      --epoch 5 \
+      --optimizer AdamW \
+      --per_device_batch_size 1 \
+      --gradient_accumulation_steps 32 \
+      --eval_step 50 \
+      --eval_batchsize 4 \
+      --warmup_ratio 0.08 \
+      --learning_rate 3e-5 \
+      --seed 3 \
+      --frozen_bert False > output/ss8/KeAP20.out 2>&1

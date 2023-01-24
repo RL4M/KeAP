@@ -1,0 +1,16 @@
+nohup sh run_main.sh \
+      --model output/models/KeAP20/encoder \
+      --output_file stability-KeAP20 \
+      --task_name stability \
+      --do_train True \
+      --epoch 5 \
+      --mean_output False \
+      --optimizer AdamW \
+      --per_device_batch_size 2 \
+      --gradient_accumulation_steps 32 \
+      --eval_step 500 \
+      --eval_batchsize 16 \
+      --warmup_ratio 0.08 \
+      --learning_rate 1e-5 \
+      --seed 3 \
+      --frozen_bert False > output/stability/KeAP20.out 2>&1
