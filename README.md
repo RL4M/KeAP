@@ -36,7 +36,7 @@ python3.7 / pytorch 1.9 / transformer 4.5.1+ / lmdb / tape_proteins / scikit-mul
 
 Pytorch-Geometric is required for the PPI task. Detailed environment configurations for the PPI task can be found in [GNN-PPI](https://github.com/lvguofeng/GNN_PPI)
 
-Since the `tape_proteins` library only implemented the `P@L` metric for the contact prediction task, we add the `P@L/5` and `P@L/2` by adding functions in the `models/modeling_utils.py` file in the `tape_proteins` library.
+Since the `tape_proteins` library only implemented the `P@L` metric for the contact prediction task, we add the `P@L/5` and `P@L/2` metrics by adding functions in the `models/modeling_utils.py` file in the `tape_proteins` library.
 The changes can be applied by running:
 ```shell
 cp replace_code/tape/modeling_utils.py /usr/local/lib/python3.7/dist-packages/tape/models/modeling_utils.py
