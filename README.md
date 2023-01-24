@@ -22,11 +22,11 @@ This repository contains an official implementation of our ICLR 2023 paper [Prot
 <span id="config"></span>
 ### Requirements for pre-training
 <span id="environment-for-pre-training"></span>
-> python 3.7
-> pytorch 1.9
-> transformer 4.5.1+
-> deepspeed 0.6.5
-> lmdb
+- python 3.7
+- pytorch 1.9
+- transformer 4.5.1+
+- deepspeed 0.6.5
+- lmdb
 
 Following [OntoProtein](https://github.com/zjunlp/OntoProtein), we also make small changes to the `deepspeed.py` file under transformers library (❗required for pre-training).
 The changes can be applied by running:
