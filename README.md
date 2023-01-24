@@ -10,6 +10,7 @@ This repository contains an official implementation of KeAP, presented by our IC
 
 ----  
 ## Environments for Pre-training
+**Main dependencies**
 - python 3.7
 - pytorch 1.9
 - transformer 4.5.1+
@@ -24,6 +25,7 @@ cp replace_code/deepspeed.py path_to/python3.7/dist-packages/transformers/deepsp
 
 ----
 ## Environments for Downstream Tasks
+**Main dependencies**
 - python 3.7
 - pytorch 1.9
 - transformer 4.5.1+
@@ -63,11 +65,11 @@ The detailed arguments are listed in `src/training_args.py`.
 ----
 ## Downstream Tasks (Fine-tuning)
 
-In this paprt, we fine-tune the [pre-trained model](https://drive.google.com/file/d/1CZFV8DA4l9F74ias1fR8mHdf1grrjsNq/view?usp=sharing) (i.e., a checkpoint of KeAP) on various downstream tasks.
+In this part, we fine-tune the [pre-trained model](https://drive.google.com/file/d/1CZFV8DA4l9F74ias1fR8mHdf1grrjsNq/view?usp=sharing) (i.e., a checkpoint of KeAP) on various downstream tasks.
 
 ❗NOTE: You will need to change some paths for downstream data and extracted embeddings (PPI and PROBE tasks) before running the code.
 
-### TAPE tasks
+### TAPE Tasks
 Secondary structure prediction, contact prediction, remote homology detection, stability prediction, and Fluorescence are tasks from [TAPE](https://github.com/songlab-cal/tape).
 
 Similar to [OntoProtein](https://github.com/zjunlp/OntoProtein), for these tasks, we provide scripts for fine-tuning under `script/` (❗Preferred). You can also use the running codes in `run_downstream.py` , and write your shell files according to your need:
