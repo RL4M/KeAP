@@ -17,7 +17,7 @@ self.definition = ""
 
 ## Pre-training Data Preparation
 
-You can download [ProteinKG25](https://zjunlp.github.io/project/ProteinKG25/) from [Google Drive](https://drive.google.com/file/d/1iTC2-zbvYZCDhWM_wxRufCvV6vvPk8HR/view).
+You can download [ProteinKG25](https://zjunlp.github.io/project/ProteinKG25/) from [Google Drive](https://drive.google.com/file/d/1-Dz7YMH71bS2Iqgc9wPDRafE8hQgDDFU/view?usp=sharing).
 
 The whole compressed package includes following files:
 
