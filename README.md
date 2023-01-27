@@ -1,8 +1,8 @@
 # Knowledge-exploited Auto-encoder for Proteins (KeAP)
 
-This repository contains an official implementation of KeAP, presented by our ICLR'23 paper titled [Protein Representation Learning via Knowledge Enhanced Primary Structure Reasoning](https://openreview.net/forum?id=VbCMhg7MRmj). KeAP effectively encodes knowledge into protein language models by learning to exploit Gene Ontology knowledge graphs for protein primary structure reasoning. Some code was borrowed from [OntoProtein](https://github.com/zjunlp/OntoProtein).
+This repository contains an official implementation of KeAP, presented by our ICLR'23 paper titled [Protein Representation Learning via Knowledge Enhanced Primary Structure Reasoning](https://openreview.net/forum?id=VbCMhg7MRmj). KeAP effectively encodes knowledge into protein language models by learning to exploit Gene Ontology knowledge graphs for protein primary structure reasoning. Some code was borrowed from [OntoProtein](https://github.com/zjunlp/OntoProtein). 
 
-❗NOTE: Please configure data, environments, and paths carefully.
+❗NOTE: Different from OntoProtein, KeAP performs pre-training on a filtered ProteinKG25 dataset to **avoid the data leakage issue in downstream tasks**. For more details please refer to `protein_go_train_triplet_v2.txt (Default)` in [instruction](./ProteinKG25.md).
 
 ----
 ## ProteinKG25 Configuration
