@@ -1,4 +1,4 @@
-nohup sh run_main.sh \
+nohup sh run_stability.sh \
       --model output/models/KeAP20/encoder \
       --output_file stability-KeAP20 \
       --task_name stability \
